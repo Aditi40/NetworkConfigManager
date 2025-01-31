@@ -20,7 +20,7 @@ class NetworkConfigManager:
             ("Display Interfaces", self.display_interfaces),
             ("View Configuration", self.view_configuration),
             ("Set Static IP", self.set_static_ip),
-            ("Disable DHCP", self.disable_dhcp),  # New button to disable DHCP
+            ("Disable DHCP", self.disable_dhcp),
             ("Set DHCP", self.set_dhcp),
             ("Change DNS", self.change_dns),
             ("Ping Test", self.ping_test),
@@ -41,7 +41,7 @@ class NetworkConfigManager:
 
         if interface and ip and subnet and gateway:
             try:
-                # Disable DHCP and set static IP
+
                 subprocess.run(['netsh', 'interface', 'ip', 'set', 'address', interface, 'static', ip, subnet, gateway], check=True)
                 messagebox.showinfo("Success", f"Disabled DHCP on {interface} and set static IP {ip}/{subnet} with gateway {gateway}.")
             except subprocess.CalledProcessError as e:
@@ -51,15 +51,14 @@ class NetworkConfigManager:
         interface = simpledialog.askstring("Input", "Enter interface name:")
         if interface:
             try:
-                # Reset to DHCP
+
                 subprocess.run(['netsh', 'interface', 'ip', 'set', 'address', interface, 'dhcp'], check=True)
-                # Clear DNS settings
+
                 subprocess.run(['netsh', 'interface', 'ip', 'set', 'dns', interface, 'dhcp'], check=True)
                 messagebox.showinfo("Success", f"Reset settings for {interface} to DHCP.")
             except subprocess.CalledProcessError as e:
                 messagebox.showerror("Error", f"Failed to reset network settings: {e}")
 
-    # ... (other methods remain unchanged)
 
 
     def display_interfaces(self):
